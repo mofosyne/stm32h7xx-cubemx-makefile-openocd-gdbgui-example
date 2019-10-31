@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=/Users/briankhuu/git/computrol-GSS150-fw/maketest/maketest/Inc
+HeaderPath=/Users/briankhuu/git/stm32h7xx-cubemx-makefile-openocd-gdbgui-example/Inc
 HeaderFiles=stm32h7xx_it.h;stm32h7xx_hal_conf.h;main.h;
-SourcePath=/Users/briankhuu/git/computrol-GSS150-fw/maketest/maketest/Src
+SourcePath=/Users/briankhuu/git/stm32h7xx-cubemx-makefile-openocd-gdbgui-example/Src
 SourceFiles=stm32h7xx_it.c;stm32h7xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]

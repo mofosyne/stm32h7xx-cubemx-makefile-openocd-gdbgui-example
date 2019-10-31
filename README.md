@@ -12,6 +12,8 @@ You also need to have installed
 
 It's important to have GDB gui, since what is nice about STM32IDE is the visual GUI. However I've not yet worked out how to get CMSIS perpherial register views to function correctly.
 
+**This is a template, you can click on the green button on top in github to copy it**
+
 ## Status
 
 * Sample program flashes led correctly in sequence on a NUCLEO-H743ZI2
@@ -35,6 +37,7 @@ From there, this is what was modified or added to this project:
 * `Makefile_ci_assist.make`   : Useful for CI builds (Work In Progress)
 * `gdbinit_stm32h7xx`         : gdbinit script for stm32h7xx
 * `gdbinit_stm32h7xx_attach`  : Similar to `gdbinit_stm32h7xx` but for actively running devices
+* `./Drivers/CMSIS/Lib/`      : Removed as it had >10mb libary file that does not appear to be used and conflicts with Github's templating feature. You can run cubemx again if you need it.
 
 ### Makefile
 
