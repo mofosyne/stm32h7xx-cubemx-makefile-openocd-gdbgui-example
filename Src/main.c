@@ -102,9 +102,9 @@ int _write(int file, char *ptr, int len)
   return len;
 }
 
-#define LD1_SET(enable) HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, (enable?GPIO_PIN_RESET:GPIO_PIN_SET));
-#define LD2_SET(enable) HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, (enable?GPIO_PIN_RESET:GPIO_PIN_SET));
-#define LD3_SET(enable) HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, (enable?GPIO_PIN_RESET:GPIO_PIN_SET));
+#define LD1_SET(enable) HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, (enable?GPIO_PIN_SET:GPIO_PIN_RESET));
+#define LD2_SET(enable) HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, (enable?GPIO_PIN_SET:GPIO_PIN_RESET));
+#define LD3_SET(enable) HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, (enable?GPIO_PIN_SET:GPIO_PIN_RESET));
 
 /* USER CODE END 0 */
 
