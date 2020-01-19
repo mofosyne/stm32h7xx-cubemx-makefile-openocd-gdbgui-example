@@ -161,13 +161,13 @@ print_solution = f"""
 
 ## C
 
-```
+```.c
 {c_code}\
 ```
 
 ## GDBINIT
 
-```
+```.gdbinit
 {gdbinit_openocd}\
 ```
 
