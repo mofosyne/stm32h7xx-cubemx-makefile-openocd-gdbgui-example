@@ -92,3 +92,25 @@ continue
 # Enable semihosting support (Read console output)
 #*****************************************************************************
 monitor arm semihosting enable
+
+#*****************************************************************************
+# Enable ITM support (SWO Output)
+# This is a workaround for openocd STM32H7 SWO support.
+# Expects Core Clock of 400000000Hz for SWO speed of 2000000Hz
+# Code Gen Ref: https://gist.github.com/mofosyne/178ad947fdff0f357eb0e03a42bcef5c
+#*****************************************************************************
+# DBGMCU_CR : Enable D3DBGCKEN D1DBGCKEN TRACECLKEN Clock Domains
+set *0x5C001004 = 0x00700000
+# SWO_LAR & SWTF_LAR : Unlock SWO and SWO Funnel
+set *0x5c003fb0 = 0xC5ACCE55
+set *0x5c004fb0 = 0xC5ACCE55
+# SWO_CODR  : systemCoreClock -> SWO_Hz == 400000000Hz -> 2000000Hz
+# SWO_CODR  = 0x0000c7 = 199 = (400000000 / 2000000) - 1)
+set *0x5c003010 = 0x0000c7
+# SWO_SPPR  : (2:  SWO NRZ, 1:  SWO Manchester encoding)
+set *0x5c0030f0 = 0x00000002
+# SWTF_CTRL : enable SWO
+set *0x5c004000 = (*0x5c004000) | 0x1
+
+monitor tpiu config internal - uart off 400000000
+monitor itm port 0 on
