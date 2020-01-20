@@ -137,7 +137,7 @@ const  uint8_t D1CorePrescTable[16] = {0, 0, 0, 0, 1, 2, 3, 4, 1, 2, 3, 4, 6, 7,
   * @param  None
   * @retval None
   */
-void SystemInit (void)
+void SystemInit(void)
 {
 #if defined (DATA_IN_D2_SRAM)
   __IO uint32_t tmpreg;
@@ -145,7 +145,7 @@ void SystemInit (void)
 
   /* FPU settings ------------------------------------------------------------*/
 #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
-  SCB->CPACR |= ((3UL << (10 * 2)) | (3UL << (11 * 2))); /* set CP10 and CP11 Full Access */
+  SCB->CPACR |= ((3UL << (10 * 2)) | (3UL << (11 * 2)));           /* set CP10 and CP11 Full Access */
 #endif
   /* Reset the RCC clock configuration to the default reset state ------------*/
   /* Set HSION bit */
@@ -216,11 +216,11 @@ void SystemInit (void)
 
 #else
   /* dual core CM7 or single core line */
-  if((DBGMCU->IDCODE & 0xFFFF0000U) < 0x20000000U)
+  if ((DBGMCU->IDCODE & 0xFFFF0000U) < 0x20000000U)
   {
     /* if stm32h7 revY*/
     /* Change  the switch matrix read issuing capability to 1 for the AXI SRAM target (Target 7) */
-    *((__IO uint32_t *)0x51008108) = 0x000000001U;
+    * ((__IO uint32_t *) 0x51008108) = 0x000000001U;
   }
 
   /* Configure the Vector Table location add offset address for cortex-M7 ------------------*/
@@ -271,7 +271,7 @@ void SystemInit (void)
   * @param  None
   * @retval None
   */
-void SystemCoreClockUpdate (void)
+void SystemCoreClockUpdate(void)
 {
   uint32_t pllp, pllsource, pllm, pllfracen, hsivalue, tmp;
   float_t fracn1, pllvco;
@@ -281,7 +281,7 @@ void SystemCoreClockUpdate (void)
   switch (RCC->CFGR & RCC_CFGR_SWS)
   {
     case RCC_CFGR_SWS_HSI:  /* HSI used as system clock source */
-      SystemCoreClock = (uint32_t) (HSI_VALUE >> ((RCC->CR & RCC_CR_HSIDIV) >> 3));
+      SystemCoreClock = (uint32_t)(HSI_VALUE >> ((RCC->CR & RCC_CR_HSIDIV) >> 3));
       break;
 
     case RCC_CFGR_SWS_CSI:  /* CSI used as system clock  source */
@@ -309,24 +309,24 @@ void SystemCoreClockUpdate (void)
           case RCC_PLLCKSELR_PLLSRC_HSI:  /* HSI used as PLL clock source */
 
             hsivalue = (HSI_VALUE >> ((RCC->CR & RCC_CR_HSIDIV) >> 3)) ;
-            pllvco = ( (float_t)hsivalue / (float_t)pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_N1) + (fracn1 / (float_t)0x2000) + (float_t)1 );
+            pllvco = ((float_t) hsivalue / (float_t) pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_N1) + (fracn1 / (float_t) 0x2000) + (float_t) 1);
 
             break;
 
           case RCC_PLLCKSELR_PLLSRC_CSI:  /* CSI used as PLL clock source */
-            pllvco = ((float_t)CSI_VALUE / (float_t)pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_N1) + (fracn1 / (float_t)0x2000) + (float_t)1 );
+            pllvco = ((float_t) CSI_VALUE / (float_t) pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_N1) + (fracn1 / (float_t) 0x2000) + (float_t) 1);
             break;
 
           case RCC_PLLCKSELR_PLLSRC_HSE:  /* HSE used as PLL clock source */
-            pllvco = ((float_t)HSE_VALUE / (float_t)pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_N1) + (fracn1 / (float_t)0x2000) + (float_t)1 );
+            pllvco = ((float_t) HSE_VALUE / (float_t) pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_N1) + (fracn1 / (float_t) 0x2000) + (float_t) 1);
             break;
 
           default:
-            pllvco = ((float_t)CSI_VALUE / (float_t)pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_N1) + (fracn1 / (float_t)0x2000) + (float_t)1 );
+            pllvco = ((float_t) CSI_VALUE / (float_t) pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_N1) + (fracn1 / (float_t) 0x2000) + (float_t) 1);
             break;
         }
-        pllp = (((RCC->PLL1DIVR & RCC_PLL1DIVR_P1) >> 9) + 1U ) ;
-        SystemCoreClock =  (uint32_t)(float_t)(pllvco / (float_t)pllp);
+        pllp = (((RCC->PLL1DIVR & RCC_PLL1DIVR_P1) >> 9) + 1U) ;
+        SystemCoreClock = (uint32_t)(float_t)(pllvco / (float_t) pllp);
       }
       else
       {

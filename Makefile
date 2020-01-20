@@ -213,7 +213,7 @@ CFLAGS += -Wall -Wpointer-arith -Werror -Wformat
 
 # Use astyle to help cleanup and maintain consistent code formatting
 code-format:
-	astyle  --style=allman --indent-switches --recursive --suffix=none --indent=spaces=2 --pad-oper --align-pointer=name ./Src/*.cpp,*.c,*.h  ./Inc/*.cpp,*.c,*.h
+	astyle --indent=spaces=2 --style=allman --indent-switches --unpad-paren --pad-oper --align-pointer=name --pad-header    --recursive --suffix=none ./Src/*.cpp,*.c,*.h  ./Inc/*.cpp,*.c,*.h
 
 
 #######################################

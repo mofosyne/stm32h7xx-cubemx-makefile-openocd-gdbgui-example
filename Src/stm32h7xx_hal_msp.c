@@ -85,7 +85,7 @@ void HAL_MspInit(void)
 void HAL_ETH_MspInit(ETH_HandleTypeDef *heth)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  if(heth->Instance == ETH)
+  if (heth->Instance == ETH)
   {
     /* USER CODE BEGIN ETH_MspInit 0 */
 
@@ -153,7 +153,7 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef *heth)
 */
 void HAL_ETH_MspDeInit(ETH_HandleTypeDef *heth)
 {
-  if(heth->Instance == ETH)
+  if (heth->Instance == ETH)
   {
     /* USER CODE BEGIN ETH_MspDeInit 0 */
 
@@ -198,7 +198,7 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef *heth)
 void HAL_UART_MspInit(UART_HandleTypeDef *huart)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  if(huart->Instance == USART3)
+  if (huart->Instance == USART3)
   {
     /* USER CODE BEGIN USART3_MspInit 0 */
 
@@ -233,7 +233,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
 */
 void HAL_UART_MspDeInit(UART_HandleTypeDef *huart)
 {
-  if(huart->Instance == USART3)
+  if (huart->Instance == USART3)
   {
     /* USER CODE BEGIN USART3_MspDeInit 0 */
 
@@ -263,7 +263,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef *huart)
 void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  if(hpcd->Instance == USB_OTG_FS)
+  if (hpcd->Instance == USB_OTG_FS)
   {
     /* USER CODE BEGIN USB_OTG_FS_MspInit 0 */
 
@@ -305,7 +305,7 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd)
 */
 void HAL_PCD_MspDeInit(PCD_HandleTypeDef *hpcd)
 {
-  if(hpcd->Instance == USB_OTG_FS)
+  if (hpcd->Instance == USB_OTG_FS)
   {
     /* USER CODE BEGIN USB_OTG_FS_MspDeInit 0 */
 

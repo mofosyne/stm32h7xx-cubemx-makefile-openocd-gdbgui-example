@@ -12,8 +12,12 @@
       "autoformat_on_save": true,
       "options_default":
       {
+        "style": "allman",
         "indent-switches": true,
-        "style": "allman"
+        "unpad-paren": true,
+        "pad-oper": true,
+        "align-pointer": "name",
+        "pad-header": true
       }
     }
   }

@@ -85,25 +85,25 @@ static void log_tx(const char *str, const int len)
 #ifdef SEMIHOST_FEATURE_ENABLED_STM32_UART
   if (log_enable_stm32_uart)
   {
-    HAL_UART_Transmit(ghwuart_ptr, (uint8_t *)str, len, 0xFF);
+    HAL_UART_Transmit(ghwuart_ptr, (uint8_t *) str, len, 0xFF);
   }
 #endif
 #ifdef SEMIHOST_FEATURE_ENABLED_SEMIHOSTING
   if (log_enable_semihost)
   {
     /* Check if debugger is attached */
-    if (!((CoreDebug->DHCSR & 1) == 1 ))
+    if (!((CoreDebug->DHCSR & 1) == 1))
     {
       return;
     }
     /* Call Semihost */
-    int args[3] = {2 /*stderr*/, (int) str, (int)len};
-    asm volatile (
+    int args[3] = {2 /*stderr*/, (int) str, (int) len};
+    asm volatile(
       " mov r0, %[reason]  \n"
       " mov r1, %[arg]  \n"
       " bkpt %[swi] \n"
       : /* Output */
-      : [reason] "r" (0x05), [arg] "r" (args), [swi] "i" (0xAB) /* Inputs */
+      : [reason] "r"(0x05), [arg] "r"(args), [swi] "i"(0xAB)          /* Inputs */
       : "r0", "r1", "r2", "r3", "ip", "lr", "memory", "cc"
     );
   }
@@ -215,7 +215,7 @@ void log_hex_dump(const int type, const char *annotate, const void *addr, const 
     {
       break;
     }
-    else if ( (i + 1) == nBytes )
+    else if ((i + 1) == nBytes)
     {
       char buff[400] = {0}; // Line Buff
       char *buff_ptr = buff;
