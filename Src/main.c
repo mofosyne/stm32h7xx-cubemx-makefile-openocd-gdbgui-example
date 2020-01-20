@@ -95,7 +95,7 @@ static void MX_USB_OTG_FS_PCD_Init(void);
 #include <stdio.h>
 int _write(int file, char *ptr, int len)
 {
-  HAL_UART_Transmit(&huart3, (uint8_t*)ptr, len, 0xFF);
+  HAL_UART_Transmit(&huart3, (uint8_t *)ptr, len, 0xFF);
 
 #if 0 // SWO
   for (int i = 0 ; i < len ; i++)
@@ -149,11 +149,14 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   // LOGGER INIT
-  log_init_stm32_uart(&huart3); //
+  log_init_swo();
+  log_init_stm32_uart(&huart3);
   //log_init_semihosting(); // Note: Not great for production. Semihosting is slow and can crash if debug is not connected.
   log_info("Test Project Start");
 
   /* USER CODE END 2 */
+
+
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */

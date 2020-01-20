@@ -8,11 +8,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdarg.h>
+#include <stdint.h>
 #include <ctype.h> //isprint
 
 #include "logger.h"
 
-#ifdef SEMIHOST_FEATURE_ENABLED_STM32_UART
+#if defined(SEMIHOST_FEATURE_ENABLED_SWO) || defined(SEMIHOST_FEATURE_ENABLED_STM32_UART)
 #include "stm32h7xx_hal.h"
 #endif
 
@@ -23,21 +24,28 @@
 // Generic global var
 static log_type_t log_level = LOGGER_LOG_RAW;
 
-// Tx Mode Enabled
-bool log_enable_swo = true; // Enabled by default due to low overhead and minimum danger in production
-
-#ifdef SEMIHOST_FEATURE_ENABLED_SEMIHOSTING
-bool log_enable_semihost    = false; // Disabled by default due to danger of using it in production (Hitting break)
+/* Tx Mode Enabled */
+#ifdef SEMIHOST_FEATURE_ENABLED_SWO
+bool log_enable_swo = false;
 #endif
-
+#ifdef SEMIHOST_FEATURE_ENABLED_SEMIHOSTING
+bool log_enable_semihost = false;
+#endif
 #ifdef SEMIHOST_FEATURE_ENABLED_STM32_UART
-bool log_enable_stm32_uart  = false;
+bool log_enable_stm32_uart = false;
 UART_HandleTypeDef *ghwuart_ptr = NULL;
 #endif
 
 /***********************
   LOGGER TX INIT
 ************************/
+#ifdef SEMIHOST_FEATURE_ENABLED_SWO
+void log_init_swo()
+{
+  // Note: Not great for production. Semihosting is slow and can crash if debug is not connected.
+  log_enable_swo = true;
+};
+#endif
 #ifdef SEMIHOST_FEATURE_ENABLED_SEMIHOSTING
 void log_init_semihosting()
 {
@@ -63,27 +71,31 @@ void log_set_level(log_type_t level)
   LOGGER
 ************************/
 
-static void log_tx(const char* str, const int len)
+static void log_tx(const char *str, const int len)
 {
-  for (int i = 0 ; i < len ; i++)
+#ifdef SEMIHOST_FEATURE_ENABLED_SWO
+  if (log_enable_swo)
   {
-    ITM_SendChar(str[i]);
+    for (int i = 0 ; i < len ; i++)
+    {
+      ITM_SendChar(str[i]);
+    }
   }
-
+#endif
 #ifdef SEMIHOST_FEATURE_ENABLED_STM32_UART
   if (log_enable_stm32_uart)
   {
-    HAL_UART_Transmit(ghwuart_ptr, (uint8_t*)str, len, 0xFF);
+    HAL_UART_Transmit(ghwuart_ptr, (uint8_t *)str, len, 0xFF);
   }
 #endif
-
 #ifdef SEMIHOST_FEATURE_ENABLED_SEMIHOSTING
   if (log_enable_semihost)
   {
     /* Check if debugger is attached */
     if (!((CoreDebug->DHCSR & 1) == 1 ))
+    {
       return;
-
+    }
     /* Call Semihost */
     int args[3] = {2 /*stderr*/, (int) str, (int)len};
     asm volatile (
@@ -99,7 +111,7 @@ static void log_tx(const char* str, const int len)
 }
 
 
-static void log_tx_str(const char* str)
+static void log_tx_str(const char *str)
 {
   /* Calculate String Length */
   int len = 0;
@@ -109,16 +121,12 @@ static void log_tx_str(const char* str)
   log_tx(str, len);
 }
 
-void log_record(const int type, const char* format, ...)
+void log_record(const int type, const char *format, ...)
 {
   char buff[400] = {0};
   size_t buff_size = sizeof(buff);
 
   if (log_level < type)
-    return;
-
-  /* Check if debugger is attached */
-  if (!((CoreDebug->DHCSR & 1) == 1 ))
   {
     return;
   }
@@ -158,7 +166,7 @@ void log_record(const int type, const char* format, ...)
   log_tx_str(buff);
 }
 
-void log_hex_dump(const int type, const char* annotate, const void *addr, const uint32_t nBytes)
+void log_hex_dump(const int type, const char *annotate, const void *addr, const unsigned nBytes)
 {
   const uint8_t byte_per_row = 16;
   const uint8_t *addr_ptr = addr;

@@ -5,8 +5,10 @@
   stm32h7 tip: https://www.st.com/content/st_com/en/support/learning/stm32-education/stm32-online-training/stm32h7-online-training.html
 */
 
+
 // Enable/Disable
-#define SEMIHOST_FEATURE_ENABLED_SEMIHOSTING
+#define SEMIHOST_FEATURE_ENABLED_SWO
+//#define SEMIHOST_FEATURE_ENABLED_SEMIHOSTING
 #define SEMIHOST_FEATURE_ENABLED_STM32_UART
 
 #ifdef SEMIHOST_FEATURE_ENABLED_STM32_UART
@@ -31,6 +33,9 @@ typedef enum log_type_t
 ************************/
 
 /* INIT Logger TX mode */
+#ifdef SEMIHOST_FEATURE_ENABLED_SWO
+void log_init_swo();
+#endif
 #ifdef SEMIHOST_FEATURE_ENABLED_SEMIHOSTING
 void log_init_semihosting();
 #endif
@@ -63,8 +68,8 @@ void log_set_level(log_type_t level);
 #else
 
 /* recording method */
-void log_record(const int type, const char* format, ...);
-void log_hex_dump(const int type, const char* annotate, const void *addr, const uint32_t nBytes);
+void log_record(const int type, const char *format, ...);
+void log_hex_dump(const int type, const char *annotate, const void *addr, const unsigned nBytes);
 
 /* log_record */
 #define log_raw(   MSG, ...)  log_record(LOGGER_LOG_RAW,   MSG     , ##__VA_ARGS__)
